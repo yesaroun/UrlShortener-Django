@@ -42,3 +42,11 @@
   - 1초에 같은 IP에서 20회 이상 호출 불가
   - 어드벤스드 통계 제공
   - 301 리턴
+
+## 실행
+
+gunicorn
+
+```bash
+gunicorn --bind 127.0.0.1:8000 UrlShortenerDjango.wsgi:application
+```
