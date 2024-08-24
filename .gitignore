@@ -382,3 +382,4 @@ link.md
 
 /shortener/__pycache__/
 .DS_Store
+.idea/
