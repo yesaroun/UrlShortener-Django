@@ -7,6 +7,18 @@ from shortener.forms import UrlCreateForm
 from shortener.utils import url_count_changer
 
 
+def url_redirect(request, prefix, url):
+    get_url = get_object_or_404(ShortenedUrls, prefix=prefix, shortened_url=url)
+    is_permanent = False
+    target = get_url.target_url
+    if get_url.creator.organization:
+        is_permanent = True
+
+    if not target.startswith("https://") and not target.startswith("http://"):
+        target = "https://" + get_url.target_url
+    return redirect(target, permanent=is_permanent)
+
+
 def url_list(request):
     get_list = ShortenedUrls.objects.order_by("-created_at").all()
     return render(request, "url_list.html", {"list": get_list})
