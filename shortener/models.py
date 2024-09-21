@@ -1,11 +1,9 @@
 import random
 import string
-import itertools
 from typing import Dict
 
 from django.db import models
 from django.contrib.auth.models import User as U
-from django.contrib.gis.geoip2 import GeoIP2
 from django.db.models.base import Model
 
 from shortener.model_utils import dict_filter, dict_slice, location_finder
@@ -153,7 +151,7 @@ class TrackingParams(TimeStampedModel):
     params = models.CharField(max_length=20)
 
     @classmethod
-    def get_tracking_params(cls, shortened_url_id):
-        return cls.objects.filter(shortened_url_id=shortened_url_id).values_list(
+    def get_tracking_params(cls, shortened_url_id: int):
+        return TrackingParams.objects.filter(shortened_url_id=shortened_url_id).values_list(
             "params", flat=True
         )

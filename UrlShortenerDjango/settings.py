@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "shortener.apps.ShortenerConfig",
     "django_ratelimit",
+    "rest_framework",
     "django_user_agents",
 ]
 
@@ -54,6 +55,11 @@ if DEBUG:
         "debug_toolbar",
         "django_seed",
     ]
+
+REST_FRAMEWORK = {
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
+    "PAGE_SIZE": 20,
+}
 
 INTERNAL_IPS = ["127.0.0.1"]
 
