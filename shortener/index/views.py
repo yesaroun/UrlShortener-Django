@@ -2,7 +2,7 @@ from django.http.response import JsonResponse
 from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
 from django.core.paginator import Paginator
-from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth import login, authenticate, logout, get_user_model
 from django.contrib.auth.decorators import login_required
 
 from shortener.models import Users
@@ -52,13 +52,15 @@ def login_view(request):
             remember_me = form.cleaned_data.get("remember_me")
             msg = "올바른 유저ID와 패스워드를 입력하세요."
             try:
-                user = Users.objects.get(user__email=email)
+                User = get_user_model()
+                user = User.objects.get(email=email)
+                user_profile = Users.objects.get(user=user)
             except Users.DoesNotExist:
                 pass
             else:
-                if user.user.check_password(raw_password):
+                if user_profile.user.check_password(raw_password):
                     msg = None
-                    login(request, user.user)
+                    login(request, user_profile.user)
                     is_ok = True
                     request.session["remember_me"] = remember_me
     else:
